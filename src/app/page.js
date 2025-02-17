@@ -16,7 +16,7 @@ export default function Home() {
         {session ? (
           <div className="flex items-center gap-4">
             <Image
-              src={session.user?.picture}
+              src={session?.user?.profilePicture}
               alt="user image"
               width={40}
               height={40}

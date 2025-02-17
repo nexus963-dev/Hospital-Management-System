@@ -3,6 +3,13 @@ import GoogleProvider from "next-auth/providers/google";
 import User from "@/src/models/user";
 import connectDB from "@/src/db/connectDB";
 
+function generateUID() {
+  const prefix = "U-HID";
+  const randomNum = Math.floor(Math.random() * 1000000);
+  const formattedNumber = String(randomNum).padStart(6, "0");
+  return `${prefix}${formattedNumber}`;
+}
+
 export const Authoptions = NextAuth({
   providers: [
     GoogleProvider({
@@ -14,37 +21,47 @@ export const Authoptions = NextAuth({
     async signIn({ user }) {
       try {
         await connectDB();
-        const currentUser = await User.findOne({ email: user.email });
+        let currentUser = await User.findOne({ email: user.email });
+
         if (!currentUser) {
-          const newUser = new User({
+          currentUser = new User({
             name: user.name,
             email: user.email,
-            username: user.email.split("@")[0],
+            uhid: generateUID(),
             profilePicture: user.image,
           });
-          await newUser.save();
+          await currentUser.save();
         }
+
         return true;
       } catch (error) {
         console.error("Error during signIn:", error);
         return false;
       }
     },
+
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.username = user.username;
-        token.name = user.name;
-        token.profilePicture = user.profilePicture;
+      try {
+        await connectDB();
+        const dbUser = await User.findOne({ email: token.email });
+
+        if (dbUser) {
+          token.id = dbUser._id;
+          token = { ...token, ...dbUser._doc };
+        }
+      } catch (error) {
+        console.error("Error fetching user in jwt callback:", error);
       }
+
       return token;
     },
+
     async session({ session, token }) {
       session.user = token;
       return session;
     },
   },
+
   pages: {
     signIn: "/",
     error: "/",
