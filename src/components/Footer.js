@@ -46,10 +46,7 @@ return (
         </div>
 
         <p className="mt-6 text-gray-500 text-sm">
-          &copy; Untitled. All rights reserved. Design by{" "}
-          <Link href="http://html5up.net" className="text-blue-400 hover:underline">
-            HTML5 UP
-          </Link>
+          &copy; Untitled. All rights reserved. Design by Hardik Agarwal
         </p>
       </div>
     </footer>

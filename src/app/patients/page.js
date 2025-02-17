@@ -1,70 +1,77 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-export default function PatientPage() {
-  const { data: session } = useSession();
-  const [formData, setFormData] = useState({
-    name: session?.user?.name || "",
-    age: "",
-    condition: "",
-    contact: ""
-  });
+export default function App() {
+  return <Dashboard />;
+}
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/save-patient", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-      if (response.ok) alert("Data saved successfully!");
-    } catch (error) {
-      console.error("Submission error:", error);
-    }
-  };
+function Dashboard() {
+  const [activeTab, setActiveTab] = useState("Vitals");
 
   return (
-    <div className="max-w-2xl p-8 mx-auto mt-10 bg-white rounded-lg shadow-md">
-      <h1 className="mb-6 text-2xl font-bold">Patient Information</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-2">Full Name</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="w-full p-2 border rounded"
-            required
-          />
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <aside className="w-1/5 bg-blue-900 text-white p-4">
+        <h2 className="text-xl font-bold">CLINIC MANAGEMENT SYSTEM</h2>
+        <ul className="mt-4">
+          <li className="py-2">Appointment</li>
+          <li className="py-2">Registration</li>
+          <li className="py-2">Consultation</li>
+          <li className="py-2">Tele Consultation</li>
+          <li className="py-2">Billing</li>
+          <li className="py-2">MIS Report</li>
+        </ul>
+      </aside>
+
+      {/* Main Content */}
+      <main className="w-4/5 bg-gray-100 p-6">
+        {/* Patient Details */}
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Patient Details</h2>
+          <div className="grid grid-cols-2 gap-4 mt-2">
+            <p><strong>UHID:</strong> U-HID000037</p>
+            <p><strong>Name:</strong> Amar Kumar</p>
+            <p><strong>Mobile:</strong> 9745608625</p>
+            <p><strong>Email:</strong> arjun@tashahealthcare.com</p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Age:</strong> 39 years</p>
+            <p><strong>DOB:</strong> 1982-07-22</p>
+            <p><strong>Blood Group:</strong> O+</p>
+          </div>
         </div>
-        <div>
-          <label className="block mb-2">Age</label>
-          <input
-            type="number"
-            value={formData.age}
-            onChange={(e) => setFormData({...formData, age: e.target.value})}
-            className="w-full p-2 border rounded"
-            required
-          />
+
+        {/* Tabbed Interface */}
+        <div className="mt-6">
+          <div className="flex space-x-4 border-b">
+            {["Vitals", "Medical History", "Diagnosis", "Prescription", "Lab Order"].map((tab) => (
+              <button
+                key={tab}
+                className={`py-2 px-4 ${activeTab === tab ? "border-b-2 border-blue-600" : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="mt-4 p-4 bg-white rounded shadow">
+            {activeTab === "Vitals" && (
+              <div className="grid grid-cols-2 gap-4">
+                <input type="text" placeholder="Temperature (°F)" className="p-2 border rounded" />
+                <input type="text" placeholder="Oxygen Level (%)" className="p-2 border rounded" />
+                <input type="text" placeholder="Max BP (mmHg)" className="p-2 border rounded" />
+                <input type="text" placeholder="Min BP (mmHg)" className="p-2 border rounded" />
+                <input type="text" placeholder="Pulse (BPM)" className="p-2 border rounded" />
+                <input type="text" placeholder="Height (cm)" className="p-2 border rounded" />
+                <input type="text" placeholder="Weight (kg)" className="p-2 border rounded" />
+                <input type="text" placeholder="BMI (kg/m²)" className="p-2 border rounded" />
+              </div>
+            )}
+            {activeTab !== "Vitals" && <p>{activeTab} Content Coming Soon...</p>}
+          </div>
         </div>
-        <div>
-          <label className="block mb-2">Medical Condition</label>
-          <textarea
-            value={formData.condition}
-            onChange={(e) => setFormData({...formData, condition: e.target.value})}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          Save Information
-        </button>
-      </form>
+      </main>
     </div>
   );
 }

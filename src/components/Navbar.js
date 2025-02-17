@@ -18,7 +18,6 @@ const Navbar = () => {
         <div className="call cursor-pointer">
           <Image src={Call} alt="Call" width={24} height={24} />
         </div>
-        <span className='text-white text-lg font-semibold'>Hardik Agarwal</span>
       </div>
     </nav>
   );

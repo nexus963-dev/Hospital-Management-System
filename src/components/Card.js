@@ -1,25 +1,28 @@
 import React from 'react';
+import Link from 'next/link';
 
-const Card = ({ title, value, percentage, icon, bgColor }) => {
+const Card = ({ title, value, percentage, icon, bgColor, link }) => {
   return (
-    <div className={`p-6 rounded-lg shadow-xl ${bgColor} text-white transform transition-all duration-300 hover:scale-105 hover:shadow-2xl`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">{title}</h2>
-          <p className="text-lg font-semibold">{value}</p>
-          <p className="text-sm opacity-80">{percentage}</p>
-        </div>
-        <div className="text-4xl">
-          {icon}
+    <Link href={link} passHref>
+      <div className={`p-6 rounded-lg shadow-xl ${bgColor} text-white transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer`}>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">{title}</h2>
+            <p className="text-lg font-semibold">{value}</p>
+            <p className="text-sm opacity-80">{percentage}</p>
+          </div>
+          <div className="text-4xl">{icon}</div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
+
+
 const CardsPage = () => {
   return (
-    <div className="min-h-7 bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card
           title="Doctors"
@@ -27,6 +30,7 @@ const CardsPage = () => {
           percentage="80% Satisfaction"
           icon="👨‍⚕️"
           bgColor="bg-blue-600"
+          link="/doctors"
         />
         <Card
           title="Patients"
@@ -34,6 +38,7 @@ const CardsPage = () => {
           percentage="60% Recovery Rate"
           icon="👩‍⚕️"
           bgColor="bg-green-600"
+          link="/patients"
         />
         <Card
           title="Report"
@@ -41,6 +46,7 @@ const CardsPage = () => {
           percentage="20% Growth"
           icon="📊"
           bgColor="bg-purple-600"
+          link="/report"
         />
         <Card
           title="Balance"
@@ -48,6 +54,7 @@ const CardsPage = () => {
           percentage="Positive Balance"
           icon="💰"
           bgColor="bg-yellow-600"
+          link="/balance"
         />
       </div>
     </div>

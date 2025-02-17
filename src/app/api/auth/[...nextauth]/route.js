@@ -1,12 +1,7 @@
 import NextAuth from "next-auth";
-import AppleProvider from "next-auth/providers/apple";
-import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/src/models/user";
 import connectDB from "@/src/db/connectDB";
-import bcrypt from "bcryptjs";
 
 export const Authoptions = NextAuth({
   providers: [
