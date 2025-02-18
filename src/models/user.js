@@ -6,7 +6,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    username: {
+    uhid: {
       type: String,
       required: true,
       unique: true,
@@ -20,6 +20,20 @@ const userSchema = new Schema(
     contact: {
       type: String,
       default: "",
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+      default: "Male",
+    },
+    dateOfBirth: {
+      type: Date,
+      default: "",
+    },
+    bloodGroup: {
+      type: String,
+      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      default: "B+",
     },
     profilePicture: {
       type: String,

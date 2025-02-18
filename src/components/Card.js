@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const Card = ({ title, value, percentage, icon, bgColor, link }) => {
   return (
@@ -21,6 +22,7 @@ const Card = ({ title, value, percentage, icon, bgColor, link }) => {
 
 
 const CardsPage = () => {
+  const { data: session } = useSession();
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -38,7 +40,7 @@ const CardsPage = () => {
           percentage="60% Recovery Rate"
           icon="👩‍⚕️"
           bgColor="bg-green-600"
-          link="/patients"
+          link={`/patients/${session?.user?.uhid}`}
         />
         <Card
           title="Report"
